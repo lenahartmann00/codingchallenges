@@ -2,7 +2,7 @@ package artjom;
 
 import java.util.Scanner;
 
-public class StdinStdout {
+public class StdinStdoutII {
 
 	public static void main(String[] args) {
 		final Scanner scan = new Scanner(System.in);
