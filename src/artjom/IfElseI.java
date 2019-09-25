@@ -2,7 +2,7 @@ package artjom;
 
 import java.util.Scanner;
 
-public class OutputFormatting {
+public class IfElseI {
 
 	private static final String WEIRD = "Weird";
 	private static final String NOT_WEIRD = "Not Weird";
