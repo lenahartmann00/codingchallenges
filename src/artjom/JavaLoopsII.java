@@ -1,40 +1,36 @@
 package artjom;
 
 import java.util.*;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 // Java Loop II from hackerrank.com
 public class JavaLoopsII {
 
-    public static void main(String[] args) {
-        final Scanner in = new Scanner(System.in);
-        final int countOfLines = in.nextInt();
+    public static void main(final String[] args) {
+
+        final Scanner scanner = new Scanner(System.in);
+        final int countOfLines = scanner.nextInt();
         final Map<Integer, List<Integer>> map = new HashMap<>();
 
         for (int i = 0; i < countOfLines; i++) {
-            final int a = in.nextInt();
-            final int b = in.nextInt();
-            final int n = in.nextInt();
-            map.put(i, Arrays.asList(a, b, n));
+            final List<Integer> list = new ArrayList<>();
+            final int a = scanner.nextInt();
+            final int b = scanner.nextInt();
+            final int n = scanner.nextInt();
+            for (int j = 0; j < n; j++) {
+                int x = a;
+                for (int k = 0; k <= j; k++) {
+                    x = x + (int) Math.pow(2, k) * b;
+                }
+                list.add(x);
+            }
+            map.put(i, list);
         }
 
-        calculateResult(map);
-        in.close();
-    }
-
-    private static void calculateResult(Map<Integer, List<Integer>> map) {
-        IntStream.range(0, map.size()).forEach(value -> {
-            int a = map.get(value).get(0);
-            final int b = map.get(value).get(1);
-            final int n = map.get(value).get(2);
-            int operand = 1;
-            for (int j = 0; j < n; j++) {
-                final int currentS = a + b * operand;
-                operand = operand * 2;
-                a = currentS;
-                System.out.print(currentS + " ");
-            }
-            System.out.println();
+        // stream joining of strings for pretty print of lines
+        map.keySet().forEach(integer -> {
+            final String collect = map.get(integer).stream().map(String::valueOf).collect(Collectors.joining(" "));
+            System.out.println(collect);
         });
     }
 }
