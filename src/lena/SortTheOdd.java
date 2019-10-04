@@ -20,17 +20,16 @@ public class SortTheOdd {
 
     public static int[] sortArray(final int[] array) {
         // 1) Create list with sorted odd numbers of array
-        final List<Integer> oddNumbers = Arrays.stream(array)
+        final int[] oddNumbers = Arrays.stream(array)
                 .filter(i -> i % 2 != 0)
                 .sorted()
-                .boxed().collect(Collectors.toList());
+                .toArray();
 
         // 2) Iterate over input array: if odd number: replace it, if not: don't
         int j = 0;
         for (int i = 0; i < array.length; i++) {
             if (array[i] % 2 != 0) {
-                array[i] = oddNumbers.get(j);
-                j++;
+                array[i] = oddNumbers[j++];
             }
         }
 
