@@ -1,7 +1,5 @@
 package lena;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,17 +19,13 @@ import java.util.stream.Collectors;
 public class SortTheOdd {
 
     public static int[] sortArray(final int[] array) {
-        // 1) Create array with only odd numbers
-        List<Integer> oddNumbers = new ArrayList<>();
-        for (final int number : array) {
-            if (number % 2 != 0) {
-                oddNumbers.add(number);
-            }
-        }
-        // 2) Sort odd array
-        oddNumbers = oddNumbers.stream().sorted().collect(Collectors.toList());
+        // 1) Create list with sorted odd numbers of array
+        final List<Integer> oddNumbers = Arrays.stream(array)
+                .filter(i -> i % 2 != 0)
+                .sorted()
+                .boxed().collect(Collectors.toList());
 
-        // 3) Iterate over input array: if odd number: replace it, if not: don't
+        // 2) Iterate over input array: if odd number: replace it, if not: don't
         int j = 0;
         for (int i = 0; i < array.length; i++) {
             if (array[i] % 2 != 0) {
@@ -39,6 +33,7 @@ public class SortTheOdd {
                 j++;
             }
         }
+
         return array;
     }
 }
