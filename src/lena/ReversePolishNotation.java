@@ -1,8 +1,6 @@
 package lena;
 
 
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -17,56 +15,35 @@ import java.util.Stack;
  */
 public class ReversePolishNotation {
 
-    private static final char PLUS = '+';
-    private static final char DIVIDE = '/';
-    private static final char MINUS = '-';
-    private static final char MULTIPLY = '*';
+    private static final String PLUS = "+";
+    private static final String DIVIDE = "/";
+    private static final String MINUS = "-";
+    private static final String MULTIPLY = "*";
 
     public double evaluate(final String expr) {
-        if (expr.isEmpty()) return 0;
+        if (expr.isEmpty()) {
+            return 0;
+        }
+        //Get array of components
+        final String[] components = expr.split(" ");
 
-        //Create Deque of components from input string
-        final Queue<String> componentDeque = getComponentDeque(expr);
-
-        // Pop all values of component stack (one after another):
-        //      if number: push it to helper stack
-        //      else: calculate last two numbers of helper-stack with given operator and push the result to helper-stack
         // The final result of the input expression is the last number of the helper-stack
         final Stack<Double> helperCalculationStack = new Stack<>();
-        while (!componentDeque.isEmpty()) {
-            String nextComponent = componentDeque.remove();
-            if (isOperator(nextComponent)) {
+        for (final String component : components) {
+            if (isOperator(component)) {
+                //Calculate last two numbers of stack with given operator and push the result to stack
                 final double secondNumber = helperCalculationStack.pop();
                 final double firstNumber = helperCalculationStack.pop();
-                final double calculation = getCalc(firstNumber, secondNumber, nextComponent.charAt(0));
-                nextComponent = String.valueOf(calculation);
+                helperCalculationStack.push(getCalculationResult(firstNumber, secondNumber, component));
+            } else {
+                helperCalculationStack.push(Double.parseDouble(component));
             }
-            helperCalculationStack.push(Double.parseDouble(nextComponent));
         }
         return helperCalculationStack.pop();
     }
 
-    private static Queue<String> getComponentDeque(final String string) {
-        final char[] chars = string.toCharArray();
-        final Queue<String> deque = new ArrayDeque<>();
 
-        StringBuilder lastString = new StringBuilder();
-        for (final char c : chars) {
-            if (c != ' ') {
-                lastString.append(c);
-            } else {
-                deque.add(lastString.toString());
-                lastString = new StringBuilder();
-            }
-        }
-        if (!lastString.toString().isEmpty()) {
-            deque.add(lastString.toString());
-        }
-
-        return deque;
-    }
-
-    private static double getCalc(final double firstNumber, final double secondNumber, final char operator) {
+    private static double getCalculationResult(final double firstNumber, final double secondNumber, final String operator) {
         switch (operator) {
             case PLUS:
                 return firstNumber + secondNumber;
@@ -82,9 +59,7 @@ public class ReversePolishNotation {
     }
 
     private static boolean isOperator(final String input) {
-        if (input.length() != 1) return false;
-        final char inputChar = input.charAt(0);
-        return (inputChar == PLUS) || (inputChar == MINUS) || (inputChar == MULTIPLY) || (inputChar == DIVIDE);
+        return input.equals(PLUS) || input.equals(MINUS) || input.equals(MULTIPLY) || input.equals(DIVIDE);
     }
 
 }
